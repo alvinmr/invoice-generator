@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Clock, Download, FileText, Save, Trash2, X } from "lucide-react";
 import { StoredInvoice, useInvoiceStorage } from "@/lib/use-invoice-storage";
-import { formatDate } from "@/lib/utils";
+import { formatDate, cn } from "@/lib/utils";
 import { Invoice } from "@/lib/invoice-types";
 import { useState } from "react";
 import {
@@ -30,13 +30,15 @@ interface InvoiceStorageDialogProps {
   onLoadInvoice: (invoice: Invoice) => void;
   variant?: "outline" | "default";
   triggerLabel?: string;
+  className?: string;
 }
 
 export function InvoiceStorageDialog({
   currentInvoice,
   onLoadInvoice,
   variant = "outline",
-  triggerLabel = "Invoice Tersimpan"
+  triggerLabel = "Invoice Tersimpan",
+  className
 }: InvoiceStorageDialogProps) {
   const { invoices, saveInvoice, deleteInvoice } = useInvoiceStorage();
   const [open, setOpen] = useState(false);
@@ -69,12 +71,13 @@ export function InvoiceStorageDialog({
     <>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant={variant} className="gap-2">
+          <Button variant={variant} className={cn("gap-2", className)}>
             <FileText className="h-4 w-4" />
-            {triggerLabel}
+            <span className="hidden xs:inline">{triggerLabel}</span>
+            <span className="xs:hidden">{triggerLabel === "Invoice Tersimpan" ? "Tersimpan" : triggerLabel}</span>
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-3xl">
+        <DialogContent className="max-w-[95vw] sm:max-w-lg md:max-w-2xl lg:max-w-3xl">
           <DialogHeader>
             <DialogTitle>Invoice Tersimpan</DialogTitle>
             <DialogDescription>
@@ -82,17 +85,17 @@ export function InvoiceStorageDialog({
             </DialogDescription>
           </DialogHeader>
           
-          <div className="flex justify-between items-center my-2">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 my-2">
             <p className="text-sm text-muted-foreground">
               Total: <span className="font-medium">{invoices.length} invoice</span>
             </p>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full sm:w-auto">
               {saveSuccess && (
                 <motion.p
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="text-sm text-green-600"
+                  className="text-sm text-green-600 hidden sm:block"
                 >
                   Invoice berhasil disimpan!
                 </motion.p>
@@ -100,11 +103,22 @@ export function InvoiceStorageDialog({
               <Button 
                 variant="outline" 
                 onClick={handleSaveInvoice}
-                className="gap-2"
+                className="gap-2 w-full sm:w-auto"
               >
                 <Save className="h-4 w-4" />
-                Simpan Invoice Saat Ini
+                <span className="hidden sm:inline">Simpan Invoice Saat Ini</span>
+                <span className="sm:hidden">Simpan</span>
               </Button>
+              {saveSuccess && (
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="text-xs text-green-600 sm:hidden text-center w-full mt-1"
+                >
+                  Invoice berhasil disimpan!
+                </motion.p>
+              )}
             </div>
           </div>
 

@@ -7,10 +7,11 @@ import { useEffect, useState } from 'react'
 import { Button } from './ui/button'
 
 interface InvoicePDFGeneratorProps {
-  invoice: Invoice
+  invoice: Invoice;
+  className?: string;
 }
 
-export function InvoicePDFGenerator({ invoice }: InvoicePDFGeneratorProps) {
+export function InvoicePDFGenerator({ invoice, className }: InvoicePDFGeneratorProps) {
   const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
@@ -342,9 +343,10 @@ export function InvoicePDFGenerator({ invoice }: InvoicePDFGeneratorProps) {
   return (
     <Button
       onClick={generatePDF}
-      
+      className={className}
     >
-      Generate PDF
+      <span className="hidden xs:inline">Generate PDF</span>
+      <span className="xs:hidden">PDF</span>
     </Button>
   )
 }

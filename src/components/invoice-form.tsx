@@ -164,23 +164,24 @@ export function InvoiceForm() {
   };
 
   return (
-    <div className="grid lg:grid-cols-2 gap-8">
+    <div className="grid lg:grid-cols-2 gap-4 sm:gap-8">
       <div>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4 border-b">
+        <Card className="overflow-hidden">
+          <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2 sm:space-y-0 pb-4 border-b">
             <div>
-              <CardTitle className="text-xl">Informasi Faktur</CardTitle>
+              <CardTitle className="text-lg sm:text-xl">Informasi Faktur</CardTitle>
               <div className="flex items-center gap-2 mt-2">
-                <Progress value={formProgress} className="h-2 w-40" />
-                <span className="text-sm text-muted-foreground">{formProgress}% Terisi</span>
+                <Progress value={formProgress} className="h-2 w-36 sm:w-40" />
+                <span className="text-xs sm:text-sm text-muted-foreground">{formProgress}% Terisi</span>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
               <InvoiceStorageDialog 
                 currentInvoice={invoice}
                 onLoadInvoice={(loadedInvoice) => setInvoice(loadedInvoice)}
                 variant="outline"
                 triggerLabel="Invoice Tersimpan"
+                className="w-full sm:w-auto"
               />
               <TooltipProvider>
                 <Tooltip>
@@ -190,7 +191,7 @@ export function InvoiceForm() {
                       size="sm" 
                       onClick={loadDummyData} 
                       disabled={isSavingData}
-                      className="min-w-32"
+                      className="min-w-32 w-full sm:w-auto"
                     >
                       {isSavingData ? (
                         <>
@@ -682,32 +683,40 @@ export function InvoiceForm() {
               </div>
             </div>
           </CardContent>
-          <CardFooter className="flex justify-between gap-4 border-t pt-4">
+          <CardFooter className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 border-t pt-4">
             <div>
               {formProgress < 100 && (
-                <p className="text-sm text-amber-600 flex items-center gap-1">
+                <p className="text-xs sm:text-sm text-amber-600 flex items-center gap-1">
                   <AlertCircle className="h-4 w-4" />
                   <span>Harap lengkapi semua data yang wajib (*)</span>
                 </p>
               )}
               {formProgress === 100 && (
-                <p className="text-sm text-green-600 flex items-center gap-1">
+                <p className="text-xs sm:text-sm text-green-600 flex items-center gap-1">
                   <Check className="h-4 w-4" />
                   <span>Formulir telah lengkap</span>
                 </p>
               )}
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 w-full sm:w-auto">
               <InvoiceStorageDialog 
                 currentInvoice={invoice}
                 onLoadInvoice={(loadedInvoice) => setInvoice(loadedInvoice)}
                 variant="default"
                 triggerLabel="Simpan"
+                className="flex-1 sm:flex-none"
               />
-              <Button variant="outline" onClick={() => setShowPreview(!showPreview)}>
-                {showPreview ? "Tutup Pratinjau" : "Pratinjau"}
+              <Button 
+                variant="outline" 
+                onClick={() => setShowPreview(!showPreview)}
+                className="flex-1 sm:flex-none"
+              >
+                {showPreview ? "Tutup" : "Pratinjau"}
               </Button>
-              <InvoicePDFGenerator invoice={invoice} />
+              <InvoicePDFGenerator 
+                invoice={invoice} 
+                className="flex-1 sm:flex-none"
+              />
             </div>
           </CardFooter>
         </Card>
