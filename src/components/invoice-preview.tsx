@@ -56,7 +56,7 @@ export function InvoicePreview({ invoice }: InvoicePreviewProps) {
           <tbody>
             {invoice.items.map((item, index) => (
               <tr key={index} className="border-b">
-                <td className="py-2">{item.description}</td>
+                <td className="py-2 whitespace-pre-line">{item.description}</td>
                 <td className="py-2 text-right">{item.quantity}</td>
                 <td className="py-2 text-right">{formatCurrency(item.price)}</td>
                 <td className="py-2 text-right">{formatCurrency(item.quantity * item.price)}</td>

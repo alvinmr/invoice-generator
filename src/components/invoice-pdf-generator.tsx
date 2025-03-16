@@ -170,8 +170,11 @@ export function InvoicePDFGenerator({ invoice }: InvoicePDFGeneratorProps) {
       invoice.items.forEach((item, index) => {
         // Estimate height needed for this row
         const description = item.description || "Item"
+        
+        // Meningkatkan jarak untuk deskripsi panjang
         const descLines = doc.splitTextToSize(description, cols.desc.width - 5)
-        const estimatedHeight = Math.max(descLines.length * 5, 7) + 2
+        const lineHeight = 5
+        const estimatedHeight = Math.max(descLines.length * lineHeight, 7) + 2
         
         // Check if we need a new page
         if (checkPageBreak(estimatedHeight + 10)) {
@@ -181,44 +184,35 @@ export function InvoicePDFGenerator({ invoice }: InvoicePDFGeneratorProps) {
         // Item description
         doc.text(descLines, cols.desc.x, y)
         
-        // Calculate actual height used
-        const lineHeight = Math.max(descLines.length * 5, 7)
+        // Calculate actual height used for this row
+        const actualHeight = Math.max(descLines.length * lineHeight, 7)
         
-        // Right-aligned numeric values
+        // Right-aligned numeric values - diposisikan di tengah secara vertikal relatif terhadap deskripsi
+        const valueYPos = y + (actualHeight / 2) - (lineHeight / 2)
+        
         doc.text(
           `${item.quantity}`, 
           cols.qty.x + cols.qty.width, 
-          y, 
+          valueYPos, 
           { align: 'right' }
         )
         
         doc.text(
           formatCurrency(item.price).replace('Rp', ''), 
           cols.price.x + cols.price.width, 
-          y, 
+          valueYPos, 
           { align: 'right' }
         )
         
         doc.text(
           formatCurrency(item.quantity * item.price).replace('Rp', ''), 
           cols.total.x + cols.total.width, 
-          y, 
+          valueYPos, 
           { align: 'right' }
         )
         
-        // Move to next row
-        y += lineHeight + 2
-        
-        // Remove the separator lines between items
-        // The code below was causing the unwanted lines
-        /*
-        if (index < invoice.items.length - 1) {
-          doc.setDrawColor(220, 220, 220)
-          doc.setLineWidth(0.2)
-          doc.line(margin, y - 1, pageWidth - margin, y - 1)
-          doc.setDrawColor(0, 0, 0)
-        }
-        */
+        // Move to next row - height berdasarkan tinggi aktual deskripsi
+        y += actualHeight + 4
       })
       
       // Draw a line after the items

@@ -418,9 +418,9 @@ export function InvoiceForm() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="grid grid-cols-12 gap-2 items-end border border-border rounded-lg p-3 bg-card/50"
+                  className="grid grid-cols-12 gap-4 items-start border border-border rounded-lg p-3 bg-card/50"
                 >
-                  <div className="col-span-12 md:col-span-5">
+                  <div className="col-span-12 md:col-span-5 space-y-2">
                     <Label 
                       htmlFor={`itemDesc${index}`}
                       className={cn(
@@ -433,20 +433,25 @@ export function InvoiceForm() {
                         <AlertCircle className="h-3 w-3" />
                       )}
                     </Label>
-                    <Input
+                    <Textarea
                       id={`itemDesc${index}`}
                       value={item.description}
                       onChange={(e) => updateItem(index, 'description', e.target.value)}
-                      placeholder="Deskripsi layanan"
+                      placeholder="Deskripsi detail layanan atau produk"
                       onFocus={() => setFocusedField(`itemDesc${index}`)}
                       onBlur={() => setFocusedField(null)}
+                      rows={2}
                       className={cn(
+                        "resize-none",
                         focusedField === `itemDesc${index}` && "border-primary ring-1 ring-primary",
                         isFieldInvalid(item.description) && "border-red-300"
                       )}
                     />
+                    <p className="text-xs text-muted-foreground">
+                      Deskripsi detail bisa mencakup spesifikasi, waktu, atau catatan khusus
+                    </p>
                   </div>
-                  <div className="col-span-6 md:col-span-2">
+                  <div className="col-span-6 md:col-span-2 space-y-2 mt-0 md:mt-8">
                     <Label htmlFor={`itemQty${index}`}>Jumlah</Label>
                     <Input
                       id={`itemQty${index}`}
@@ -459,7 +464,7 @@ export function InvoiceForm() {
                       className={cn(focusedField === `itemQty${index}` && "border-primary ring-1 ring-primary")}
                     />
                   </div>
-                  <div className="col-span-6 md:col-span-3">
+                  <div className="col-span-6 md:col-span-3 space-y-2 mt-0 md:mt-8">
                     <Label 
                       htmlFor={`itemPrice${index}`}
                       className={cn(
@@ -486,30 +491,28 @@ export function InvoiceForm() {
                       )}
                     />
                   </div>
-                  <div className="col-span-12 md:col-span-2">
-                    <div className="flex items-center justify-between gap-2">
-                      <p className="text-sm text-muted-foreground">
-                        Total: <span className="font-semibold text-foreground">Rp {calculateRowTotal(item).toLocaleString()}</span>
-                      </p>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button 
-                              variant="ghost" 
-                              size="icon"
-                              onClick={() => confirmDeleteItem(index)}
-                              disabled={invoice.items.length <= 1}
-                              className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-50"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Hapus item ini</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </div>
+                  <div className="col-span-12 md:col-span-2 flex flex-row md:flex-col justify-between items-center md:items-end md:mt-8 gap-2">
+                    <p className="text-sm text-muted-foreground">
+                      Total: <span className="font-semibold text-foreground">Rp {calculateRowTotal(item).toLocaleString()}</span>
+                    </p>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button 
+                            variant="ghost" 
+                            size="icon"
+                            onClick={() => confirmDeleteItem(index)}
+                            disabled={invoice.items.length <= 1}
+                            className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-50"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Hapus item ini</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </div>
                 </motion.div>
               ))}
