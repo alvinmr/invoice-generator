@@ -1,5 +1,6 @@
 import { InvoiceForm } from "@/components/invoice-form"
 import { ThemeToggle } from "@/components/theme-toggle"
+import "react-day-picker/style.css";
 
 export default function Home() {
   return (
