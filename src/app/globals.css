@@ -121,3 +121,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Ensure all buttons and interactive elements have a pointer cursor */
+button,
+[role="button"],
+a,
+.cursor-pointer,
+.button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  cursor: pointer !important;
+}

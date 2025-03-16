@@ -1,3 +1,5 @@
+import { format, startOfDay } from 'date-fns';
+
 export interface Person {
   name: string;
   email: string;
@@ -39,8 +41,10 @@ export interface Invoice {
 
 export const defaultInvoice: Invoice = {
   number: `INV-${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}${String(new Date().getDate()).padStart(2, '0')}-001`,
-  date: new Date().toISOString().split('T')[0],
-  dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+  // Ubah nilai default tanggal faktur - misalnya untuk menetapkan tanggal hari ini
+  date: format(startOfDay(new Date()), 'yyyy-MM-dd'),
+  // Ubah nilai default tanggal jatuh tempo - misalnya untuk menetapkan 30 hari dari sekarang
+  dueDate: format(startOfDay(new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)), 'yyyy-MM-dd'),
   from: {
     name: "",
     email: "",
@@ -70,8 +74,8 @@ export const defaultInvoice: Invoice = {
 
 export const dummyInvoice: Invoice = {
   number: 'INV-2025-0116-001',
-  date: new Date().toISOString().substr(0, 10),
-  dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().substr(0, 10),
+  date: new Date().toISOString().split('T')[0],
+  dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
   from: {
     name: 'Alvin Maulana Rhusuli',
     email: 'maulanaalvin@gmail.com',
@@ -90,7 +94,7 @@ export const dummyInvoice: Invoice = {
   ],
   payment: {
     bank: 'Bank BCA',
-    accountNumber: '6955112702 ',
+    accountNumber: '6955112702',
     accountName: 'Alvin Maulana Rhusuli'
   },
   notes: 'Pembayaran paling lambat 14 hari setelah faktur diterima. Terima kasih atas kerjasamanya.'

@@ -30,6 +30,9 @@ import { Progress } from "@/components/ui/progress"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
+import { InvoiceStorageDialog } from "./invoice-storage-dialog"
+import { DatePicker } from "@/components/ui/date-picker"
+import { parseISO, format, startOfDay } from "date-fns"
 
 export function InvoiceForm() {
   const [invoice, setInvoice] = useState<Invoice>(defaultInvoice)
@@ -149,6 +152,17 @@ export function InvoiceForm() {
     return value === null || value === undefined || value === '';
   }
 
+  const updateDateField = (field: 'date' | 'dueDate', value: Date | undefined) => {
+    if (value) {
+      // Gunakan format untuk memastikan kita hanya mengambil tanggal tanpa waktu
+      const formattedDate = format(startOfDay(value), 'yyyy-MM-dd');
+      setInvoice(prev => ({
+        ...prev,
+        [field]: formattedDate
+      }));
+    }
+  };
+
   return (
     <div className="grid lg:grid-cols-2 gap-8">
       <div>
@@ -161,30 +175,38 @@ export function InvoiceForm() {
                 <span className="text-sm text-muted-foreground">{formProgress}% Terisi</span>
               </div>
             </div>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={loadDummyData} 
-                    disabled={isSavingData}
-                    className="min-w-32"
-                  >
-                    {isSavingData ? (
-                      <>
-                        <span className="animate-pulse mr-1">Mengisi Data</span>...
-                      </>
-                    ) : (
-                      "Load Dummy Data"
-                    )}
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Isi form dengan data contoh</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <div className="flex items-center gap-2">
+              <InvoiceStorageDialog 
+                currentInvoice={invoice}
+                onLoadInvoice={(loadedInvoice) => setInvoice(loadedInvoice)}
+                variant="outline"
+                triggerLabel="Invoice Tersimpan"
+              />
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={loadDummyData} 
+                      disabled={isSavingData}
+                      className="min-w-32"
+                    >
+                      {isSavingData ? (
+                        <>
+                          <span className="animate-pulse mr-1">Mengisi Data</span>...
+                        </>
+                      ) : (
+                        "Load Dummy Data"
+                      )}
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Isi form dengan data contoh</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
           </CardHeader>
           <CardContent className="space-y-6 pt-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -209,41 +231,35 @@ export function InvoiceForm() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="invoiceDate" className="flex items-center gap-1">
+                <Label className="flex items-center gap-1">
                   Tanggal Faktur
                   {isFieldInvalid(invoice.date) && (
                     <span className="text-red-500 text-xs">*</span>
                   )}
                 </Label>
-                <Input
-                  id="invoiceDate"
-                  type="date"
-                  value={invoice.date}
-                  onChange={(e) => updateInvoiceField('date', e.target.value)}
-                  onFocus={() => setFocusedField('invoiceDate')}
-                  onBlur={() => setFocusedField(null)}
+                <DatePicker 
+                  date={invoice.date ? parseISO(invoice.date) : undefined}
+                  setDate={(date) => updateDateField('date', date)}
+                  placeholder="Pilih tanggal faktur"
+                  defaultDate={new Date()} // Tambahkan defaultDate untuk mengatur nilai default
                   className={cn(
-                    focusedField === 'invoiceDate' && "border-primary ring-1 ring-primary",
                     isFieldInvalid(invoice.date) && "border-red-300"
                   )}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="dueDate" className="flex items-center gap-1">
+                <Label className="flex items-center gap-1">
                   Jatuh Tempo
                   {isFieldInvalid(invoice.dueDate) && (
                     <span className="text-red-500 text-xs">*</span>
                   )}
                 </Label>
-                <Input
-                  id="dueDate"
-                  type="date"
-                  value={invoice.dueDate}
-                  onChange={(e) => updateInvoiceField('dueDate', e.target.value)}
-                  onFocus={() => setFocusedField('dueDate')}
-                  onBlur={() => setFocusedField(null)}
+                <DatePicker 
+                  date={invoice.dueDate ? parseISO(invoice.dueDate) : undefined}
+                  setDate={(date) => updateDateField('dueDate', date)}
+                  placeholder="Pilih tanggal jatuh tempo"
+                  defaultDate={new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)} // Default 30 hari ke depan
                   className={cn(
-                    focusedField === 'dueDate' && "border-primary ring-1 ring-primary",
                     isFieldInvalid(invoice.dueDate) && "border-red-300"
                   )}
                 />
@@ -682,6 +698,12 @@ export function InvoiceForm() {
               )}
             </div>
             <div className="flex gap-2">
+              <InvoiceStorageDialog 
+                currentInvoice={invoice}
+                onLoadInvoice={(loadedInvoice) => setInvoice(loadedInvoice)}
+                variant="default"
+                triggerLabel="Simpan"
+              />
               <Button variant="outline" onClick={() => setShowPreview(!showPreview)}>
                 {showPreview ? "Tutup Pratinjau" : "Pratinjau"}
               </Button>
