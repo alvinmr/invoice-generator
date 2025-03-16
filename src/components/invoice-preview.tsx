@@ -1,12 +1,16 @@
 import { Invoice } from '@/lib/invoice-types'
 import { formatCurrency, formatDate } from '@/lib/utils'
 import { Card } from './ui/card'
+import { useTheme } from 'next-themes'
 
 interface InvoicePreviewProps {
   invoice: Invoice
 }
 
 export function InvoicePreview({ invoice }: InvoicePreviewProps) {
+  const { theme } = useTheme();
+  const isDarkMode = theme === 'dark';
+
   const calculateTotal = () => {
     return invoice.items.reduce((total, item) => {
       return total + (item.quantity * item.price)
@@ -14,7 +18,10 @@ export function InvoicePreview({ invoice }: InvoicePreviewProps) {
   }
 
   return (
-    <Card className="p-6 bg-white print:shadow-none" id="invoice-preview">
+    <Card 
+      className={`p-6 print:shadow-none ${isDarkMode ? 'bg-card' : 'bg-white'}`} 
+      id="invoice-preview"
+    >
       <div className="flex justify-between items-start">
         <div>
           <h1 className="text-2xl font-bold">FAKTUR</h1>
