@@ -1,3 +1,11 @@
+export interface Person {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  npwp?: string; // Menambahkan field optional untuk NPWP
+}
+
 export interface InvoiceItem {
   description: string
   quantity: number

@@ -310,6 +310,32 @@ export function InvoiceForm() {
                     className={cn(focusedField === 'yourPhone' && "border-primary ring-1 ring-primary")}
                   />
                 </div>
+                <div className="space-y-2">
+                  <Label htmlFor="yourNpwp">
+                    NPWP
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button variant="ghost" size="sm" className="h-5 w-5 p-0 ml-1 rounded-full">
+                            <Info className="h-3 w-3" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Nomor Pokok Wajib Pajak (opsional)</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </Label>
+                  <Input
+                    id="yourNpwp"
+                    value={invoice.from.npwp || ""}
+                    onChange={(e) => updateFromField('npwp', e.target.value)}
+                    placeholder="00.000.000.0-000.000"
+                    onFocus={() => setFocusedField('yourNpwp')}
+                    onBlur={() => setFocusedField(null)}
+                    className={cn(focusedField === 'yourNpwp' && "border-primary ring-1 ring-primary")}
+                  />
+                </div>
                 <div className="space-y-2 md:col-span-2">
                   <Label htmlFor="yourAddress">Alamat</Label>
                   <Textarea
@@ -384,6 +410,32 @@ export function InvoiceForm() {
                     onFocus={() => setFocusedField('clientPhone')}
                     onBlur={() => setFocusedField(null)}
                     className={cn(focusedField === 'clientPhone' && "border-primary ring-1 ring-primary")}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="clientNpwp">
+                    NPWP Klien
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button variant="ghost" size="sm" className="h-5 w-5 p-0 ml-1 rounded-full">
+                            <Info className="h-3 w-3" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Nomor Pokok Wajib Pajak klien (opsional)</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </Label>
+                  <Input
+                    id="clientNpwp"
+                    value={invoice.to.npwp || ""}
+                    onChange={(e) => updateToField('npwp', e.target.value)}
+                    placeholder="00.000.000.0-000.000"
+                    onFocus={() => setFocusedField('clientNpwp')}
+                    onBlur={() => setFocusedField(null)}
+                    className={cn(focusedField === 'clientNpwp' && "border-primary ring-1 ring-primary")}
                   />
                 </div>
                 <div className="space-y-2 md:col-span-2">

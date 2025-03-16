@@ -32,6 +32,7 @@ export function InvoicePreview({ invoice }: InvoicePreviewProps) {
           <p className="font-semibold">{invoice.from.name}</p>
           <p>{invoice.from.email}</p>
           <p>{invoice.from.phone}</p>
+          {invoice.from.npwp && <p><span className="text-muted-foreground">NPWP:</span> {invoice.from.npwp}</p>}
           <p className="whitespace-pre-line">{invoice.from.address}</p>
         </div>
         <div>
@@ -39,6 +40,7 @@ export function InvoicePreview({ invoice }: InvoicePreviewProps) {
           <p className="font-semibold">{invoice.to.name}</p>
           <p>{invoice.to.email}</p>
           <p>{invoice.to.phone}</p>
+          {invoice.to.npwp && <p><span className="text-muted-foreground">NPWP:</span> {invoice.to.npwp}</p>}
           <p className="whitespace-pre-line">{invoice.to.address}</p>
         </div>
       </div>

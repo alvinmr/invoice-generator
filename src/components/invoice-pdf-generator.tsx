@@ -91,6 +91,12 @@ export function InvoicePDFGenerator({ invoice }: InvoicePDFGeneratorProps) {
         fromY += 5
       }
       
+      // Tambahkan NPWP jika ada
+      if (invoice.from.npwp) {
+        doc.text(`NPWP: ${invoice.from.npwp}`, margin, fromY)
+        fromY += 5
+      }
+      
       // Handle multiline address
       fromY = addMultiLineText(
         invoice.from.address || "", 
@@ -113,6 +119,12 @@ export function InvoicePDFGenerator({ invoice }: InvoicePDFGeneratorProps) {
       
       if (invoice.to.phone) {
         doc.text(invoice.to.phone, pageWidth / 2 + 5, toY)
+        toY += 5
+      }
+      
+      // Tambahkan NPWP klien jika ada
+      if (invoice.to.npwp) {
+        doc.text(`NPWP: ${invoice.to.npwp}`, pageWidth / 2 + 5, toY)
         toY += 5
       }
       
