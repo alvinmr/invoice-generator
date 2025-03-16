@@ -5,7 +5,7 @@ import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Generator Faktur Freelancer',
+  title: 'Generator Faktur',
   description: 'Aplikasi untuk membuat faktur profesional untuk freelancer',
 }
 
@@ -16,6 +16,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id">
+      <head>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+      </head>
       <body className={inter.className}>
         {children}
       </body>
