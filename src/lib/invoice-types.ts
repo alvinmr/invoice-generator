@@ -69,30 +69,29 @@ export const defaultInvoice: Invoice = {
 }
 
 export const dummyInvoice: Invoice = {
-  number: 'INV-2023-001',
+  number: 'INV-2025-0116-001',
   date: new Date().toISOString().substr(0, 10),
   dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().substr(0, 10),
   from: {
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    phone: '+62 8123456789',
-    address: 'Jl. Merdeka No. 123, Jakarta Selatan, DKI Jakarta 12345'
+    name: 'Alvin Maulana Rhusuli',
+    email: 'maulanaalvin@gmail.com',
+    phone: '081234567890',
+    address: 'Jl. Raya Kuta No. 123, Kuta, Bali 80361',
+    npwp: '00.000.000.0-000.000'
   },
   to: {
-    name: 'PT Abadi Jaya',
-    email: 'finance@abadijaya.com',
-    phone: '+62 2198765432',
-    address: 'Jl. Sudirman No. 45, Jakarta Pusat, DKI Jakarta 10220'
+    name: 'Bank Indonesia Bali',
+    email: '-',
+    phone: '-',
+    address: 'Jl. Letda Tantular No.4, Dangin Puri Klod, Kec. Denpasar Tim., Kota Denpasar, Bali 80234'
   },
   items: [
     { description: 'Website Development', quantity: 1, price: 5000000 },
-    { description: 'Logo Design', quantity: 1, price: 1500000 },
-    { description: 'SEO Setup', quantity: 1, price: 2000000 }
   ],
   payment: {
-    bank: 'Bank Mandiri',
-    accountNumber: '123-456-789-0',
-    accountName: 'John Doe'
+    bank: 'Bank BCA',
+    accountNumber: '6955112702 ',
+    accountName: 'Alvin Maulana Rhusuli'
   },
   notes: 'Pembayaran paling lambat 14 hari setelah faktur diterima. Terima kasih atas kerjasamanya.'
 }
