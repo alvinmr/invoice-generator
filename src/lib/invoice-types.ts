@@ -17,6 +17,7 @@ export interface InvoiceContact {
   email: string
   phone: string
   address: string
+  npwp?: string // Menambahkan field optional untuk NPWP
 }
 
 export interface InvoicePayment {
