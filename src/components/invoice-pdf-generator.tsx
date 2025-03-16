@@ -5,13 +5,21 @@ import { formatCurrency, formatDate } from '@/lib/utils'
 import { jsPDF } from 'jspdf'
 import { useEffect, useState } from 'react'
 import { Button } from './ui/button'
+import { Printer } from 'lucide-react'
 
 interface InvoicePDFGeneratorProps {
   invoice: Invoice;
   className?: string;
+  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+  size?: "default" | "sm" | "lg" | "icon";
 }
 
-export function InvoicePDFGenerator({ invoice, className }: InvoicePDFGeneratorProps) {
+export function InvoicePDFGenerator({ 
+  invoice, 
+  className,
+  variant = "default",
+  size = "default"
+}: InvoicePDFGeneratorProps) {
   const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
@@ -344,7 +352,10 @@ export function InvoicePDFGenerator({ invoice, className }: InvoicePDFGeneratorP
     <Button
       onClick={generatePDF}
       className={className}
+      variant={variant}
+      size={size}
     >
+      <Printer className="h-4 w-4 mr-2" />
       <span className="hidden xs:inline">Generate PDF</span>
       <span className="xs:hidden">PDF</span>
     </Button>

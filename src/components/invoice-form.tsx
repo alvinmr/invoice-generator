@@ -8,7 +8,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { Invoice, InvoiceItem, defaultInvoice, dummyInvoice } from "@/lib/invoice-types"
 import { useEffect, useState } from "react"
 import { InvoicePDFGenerator } from "./invoice-pdf-generator"
-import { InvoicePreview } from "./invoice-preview"
 import { 
   Tooltip,
   TooltipContent,
@@ -33,10 +32,10 @@ import { motion } from "framer-motion"
 import { InvoiceStorageDialog } from "./invoice-storage-dialog"
 import { DatePicker } from "@/components/ui/date-picker"
 import { parseISO, format, startOfDay } from "date-fns"
+import { InvoicePreviewDialog } from "./invoice-preview-dialog"
 
 export function InvoiceForm() {
   const [invoice, setInvoice] = useState<Invoice>(defaultInvoice)
-  const [showPreview, setShowPreview] = useState(false)
   const [formProgress, setFormProgress] = useState(0)
   const [focusedField, setFocusedField] = useState<string | null>(null)
   const [deleteItemIndex, setDeleteItemIndex] = useState<number | null>(null)
@@ -164,7 +163,7 @@ export function InvoiceForm() {
   };
 
   return (
-    <div className="grid lg:grid-cols-2 gap-4 sm:gap-8">
+    <div className="grid lg:grid-cols-1 gap-4 sm:gap-8">
       <div>
         <Card className="overflow-hidden">
           <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2 sm:space-y-0 pb-4 border-b">
@@ -706,13 +705,12 @@ export function InvoiceForm() {
                 triggerLabel="Simpan"
                 className="flex-1 sm:flex-none"
               />
-              <Button 
-                variant="outline" 
-                onClick={() => setShowPreview(!showPreview)}
+              
+              <InvoicePreviewDialog
+                invoice={invoice}
                 className="flex-1 sm:flex-none"
-              >
-                {showPreview ? "Tutup" : "Pratinjau"}
-              </Button>
+              />
+              
               <InvoicePDFGenerator 
                 invoice={invoice} 
                 className="flex-1 sm:flex-none"
@@ -721,31 +719,7 @@ export function InvoiceForm() {
           </CardFooter>
         </Card>
       </div>
-
-      {showPreview && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.3 }}
-          className="hidden lg:block sticky top-4"
-        >
-          <InvoicePreview invoice={invoice} />
-        </motion.div>
-      )}
-
-      {/* Mobile Preview */}
-      {showPreview && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.3 }}
-          className="lg:hidden"
-        >
-          <InvoicePreview invoice={invoice} />
-        </motion.div>
-      )}
       
-      {/* Delete item confirmation dialog */}
       <AlertDialog open={deleteItemIndex !== null} onOpenChange={() => setDeleteItemIndex(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>

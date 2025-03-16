@@ -22,6 +22,7 @@ export function InvoicePreview({ invoice }: InvoicePreviewProps) {
       className={`p-3 sm:p-6 print:shadow-none text-sm sm:text-base ${isDarkMode ? 'bg-card' : 'bg-white'}`} 
       id="invoice-preview"
     >
+      {/* Bagian header invoice */}
       <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-0">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold">FAKTUR</h1>
