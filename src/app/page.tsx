@@ -1,4 +1,5 @@
 import { InvoiceForm } from "@/components/invoice-form"
+import { ThemeSwitcher } from "@/components/theme-switcher";
 import { ThemeToggle } from "@/components/theme-toggle"
 import "react-day-picker/style.css";
 
@@ -11,7 +12,7 @@ export default function Home() {
             <h1 className="text-xl sm:text-2xl font-bold">Generator Faktur</h1>
             <p className="text-sm text-muted-foreground">Buat faktur profesional dengan mudah</p>
           </div>
-          <ThemeToggle />
+          <ThemeSwitcher />
         </header>
         <InvoiceForm />
         <footer className="mt-8 text-center text-xs sm:text-sm text-muted-foreground py-4">
