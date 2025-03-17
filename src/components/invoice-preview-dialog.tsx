@@ -48,7 +48,7 @@ export function InvoicePreviewDialog({
           />
         </DialogHeader>
         
-        <div className="pt-2">
+        <div className="pt-2 pb-2">
           <InvoicePreview invoice={invoice} />
         </div>
       </DialogContent>
