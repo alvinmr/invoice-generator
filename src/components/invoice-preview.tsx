@@ -11,10 +11,18 @@ export function InvoicePreview({ invoice }: InvoicePreviewProps) {
   const { theme } = useTheme();
   const isDarkMode = theme === 'dark';
 
-  const calculateTotal = () => {
+  const calculateSubtotal = () => {
     return invoice.items.reduce((total, item) => {
       return total + (item.quantity * item.price)
     }, 0)
+  }
+  
+  const calculateTax = () => {
+    return calculateSubtotal() * (invoice.tax / 100);
+  }
+  
+  const calculateTotal = () => {
+    return calculateSubtotal() + calculateTax();
   }
 
   return (
@@ -78,8 +86,14 @@ export function InvoicePreview({ invoice }: InvoicePreviewProps) {
           <tfoot>
             <tr>
               <td colSpan={3} className="text-right py-2"><strong>Subtotal</strong></td>
-              <td className="text-right py-2">{formatCurrency(calculateTotal())}</td>
+              <td className="text-right py-2">{formatCurrency(calculateSubtotal())}</td>
             </tr>
+            {invoice.tax > 0 && (
+              <tr>
+                <td colSpan={3} className="text-right py-2"><strong>Pajak ({invoice.tax}%)</strong></td>
+                <td className="text-right py-2">{formatCurrency(calculateTax())}</td>
+              </tr>
+            )}
             <tr className="border-t-2 border-foreground">
               <td colSpan={3} className="text-right py-2"><strong>TOTAL</strong></td>
               <td className="text-right py-2 font-bold">{formatCurrency(calculateTotal())}</td>

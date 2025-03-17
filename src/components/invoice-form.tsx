@@ -142,8 +142,16 @@ export function InvoiceForm() {
     return item.quantity * item.price;
   }
   
-  const calculateInvoiceTotal = () => {
+  const calculateSubtotal = () => {
     return invoice.items.reduce((total, item) => total + calculateRowTotal(item), 0);
+  }
+  
+  const calculateTax = () => {
+    return calculateSubtotal() * (invoice.tax / 100);
+  }
+  
+  const calculateInvoiceTotal = () => {
+    return calculateSubtotal() + calculateTax();
   }
   
   // Field validation functions
@@ -597,8 +605,29 @@ export function InvoiceForm() {
               <div className="mt-4 p-4 bg-muted rounded-lg">
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Subtotal:</span>
-                  <span className="font-medium">Rp {calculateInvoiceTotal().toLocaleString()}</span>
+                  <span className="font-medium">Rp {calculateSubtotal().toLocaleString()}</span>
                 </div>
+                
+                <div className="flex justify-between items-center mt-2 pt-2 border-t">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm">Pajak:</span>
+                    <div className="flex items-center">
+                      <Input 
+                        type="number"
+                        min="0"
+                        max="100"
+                        value={invoice.tax}
+                        onChange={(e) => updateInvoiceField('tax', Number(e.target.value))}
+                        className="w-16 h-7 text-sm"
+                        onFocus={() => setFocusedField('taxPercent')}
+                        onBlur={() => setFocusedField(null)}
+                      />
+                      <span className="ml-1 text-sm">%</span>
+                    </div>
+                  </div>
+                  <span className="font-medium">Rp {calculateTax().toLocaleString()}</span>
+                </div>
+                
                 <div className="flex justify-between items-center mt-2 pt-2 border-t">
                   <span className="font-semibold">TOTAL:</span>
                   <span className="font-bold text-lg">Rp {calculateInvoiceTotal().toLocaleString()}</span>

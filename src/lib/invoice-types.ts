@@ -37,6 +37,7 @@ export interface Invoice {
   items: InvoiceItem[]
   payment: InvoicePayment
   notes: string
+  tax: number // Add tax percentage field
 }
 
 export const defaultInvoice: Invoice = {
@@ -69,7 +70,8 @@ export const defaultInvoice: Invoice = {
     accountNumber: "",
     accountName: ""
   },
-  notes: ""
+  notes: "",
+  tax: 0 // Default to 0% tax
 }
 
 export const dummyInvoice: Invoice = {
@@ -97,5 +99,6 @@ export const dummyInvoice: Invoice = {
     accountNumber: '6955112702',
     accountName: 'Alvin Maulana Rhusuli'
   },
-  notes: 'Pembayaran paling lambat 14 hari setelah faktur diterima. Terima kasih atas kerjasamanya.'
+  notes: 'Pembayaran paling lambat 14 hari setelah faktur diterima. Terima kasih atas kerjasamanya.',
+  tax: 11 // Set 11% tax for dummy invoice (common rate in Indonesia)
 }

@@ -242,16 +242,18 @@ export function InvoicePDFGenerator({
       doc.line(margin, y, pageWidth - margin, y)
       y += 7
       
-      // Calculate total
-      const total = invoice.items.reduce((sum, item) => sum + (item.quantity * item.price), 0)
+      // Calculate totals
+      const subtotal = invoice.items.reduce((sum, item) => sum + (item.quantity * item.price), 0)
+      const taxAmount = subtotal * (invoice.tax / 100)
+      const total = subtotal + taxAmount
       
       // Check if summary needs a new page
       if (checkPageBreak(40)) {
         // We're on a new page, no need to add extra spacing
       }
       
-      // Add subtotal and total
-      const subtotalText = formatCurrency(total).replace('Rp', '')
+      // Add subtotal, tax and total
+      const subtotalText = formatCurrency(subtotal).replace('Rp', '')
       const totalText = formatCurrency(total).replace('Rp', '')
       
       // Subtotal row
@@ -260,6 +262,14 @@ export function InvoicePDFGenerator({
       doc.text(subtotalText, cols.total.x + cols.total.width, y, { align: 'right' })
       
       y += 7
+      
+      // Add tax row if tax is greater than 0
+      if (invoice.tax > 0) {
+        const taxText = formatCurrency(taxAmount).replace('Rp', '')
+        doc.text(`Pajak (${invoice.tax}%)`, cols.price.x, y)
+        doc.text(taxText, cols.total.x + cols.total.width, y, { align: 'right' })
+        y += 7
+      }
       
       // Total row with double line
       doc.setLineWidth(0.5)
