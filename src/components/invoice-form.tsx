@@ -195,7 +195,6 @@ export function InvoiceForm() {
                   <TooltipTrigger asChild>
                     <Button 
                       variant="outline" 
-                      size="sm" 
                       onClick={loadDummyData} 
                       disabled={isSavingData}
                       className="min-w-32 w-full sm:w-auto"

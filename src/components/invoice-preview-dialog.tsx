@@ -43,7 +43,6 @@ export function InvoicePreviewDialog({
           <InvoicePDFGenerator 
             invoice={invoice}
             variant="outline"
-            size="sm" 
             className="gap-2"
           />
         </DialogHeader>
